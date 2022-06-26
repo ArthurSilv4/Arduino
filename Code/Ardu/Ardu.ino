@@ -188,7 +188,7 @@
 
 #define CHOICE_BLUE (1 << 2)
 
-#define CHOICE_YELLOW   (1 << 3)
+//#define CHOICE_YELLOW   (1 << 3)
 
 
 
@@ -198,7 +198,7 @@
 
 #define LED_BLUE    13
 
-#define LED_YELLOW  5
+//#define LED_YELLOW  5
 
 
 
@@ -210,7 +210,7 @@
 
 #define BUTTON_BLUE   12
 
-#define BUTTON_YELLOW 6
+//#define BUTTON_YELLOW 6
 
 
 
@@ -264,7 +264,7 @@ void setup()
 
   pinMode(BUTTON_BLUE, INPUT_PULLUP);
 
-  pinMode(BUTTON_YELLOW, INPUT_PULLUP);
+  //pinMode(BUTTON_YELLOW, INPUT_PULLUP);
 
 
 
@@ -274,13 +274,13 @@ void setup()
 
   pinMode(LED_BLUE, OUTPUT);
 
-  pinMode(LED_YELLOW, OUTPUT);
+  //pinMode(LED_YELLOW, OUTPUT);
 
 
   //Som
-  //pinMode(BUZZER1, OUTPUT);
+  pinMode(BUZZER1, OUTPUT);
 
-  //pinMode(BUZZER2, OUTPUT);
+  pinMode(BUZZER2, OUTPUT);
 
 
 
@@ -292,7 +292,7 @@ void setup()
 
   // Verifique se o botão inferior direito está pressionado
 
-  if (checkButton() == CHOICE_YELLOW) play_beegees();
+ // if (checkButton() == CHOICE_YELLOW) play_beegees();
 
 
 
@@ -314,7 +314,7 @@ void setup()
 
 
 
-    setLEDs(CHOICE_RED | CHOICE_BLUE | CHOICE_YELLOW); // Ligue os outros LEDs até você soltar o botão
+    setLEDs(CHOICE_RED | CHOICE_BLUE ); //CHOICE_YELLOW); // Ligue os outros LEDs até você soltar o botão
 
 
 
@@ -344,7 +344,7 @@ void loop()
 
   // Indique o início do jogo
 
-  setLEDs(CHOICE_RED | CHOICE_GREEN | CHOICE_BLUE | CHOICE_YELLOW); // Ativar todos os LEDs
+  setLEDs(CHOICE_RED | CHOICE_GREEN | CHOICE_BLUE ); //CHOICE_YELLOW); // Ativar todos os LEDs
 
   delay(1000);
 
@@ -544,7 +544,7 @@ void add_to_moves(void)
 
 {
 
-  byte newButton = random(0, 4); //min (incluido), max (excluido)
+  byte newButton = random(0, 3); //min (incluido), max (excluido)
 
 
 
@@ -556,7 +556,7 @@ void add_to_moves(void)
 
   else if(newButton == 2) newButton = CHOICE_BLUE;
 
-  else if(newButton == 3) newButton = CHOICE_YELLOW;
+  ///else if(newButton == 3) newButton = CHOICE_YELLOW;
 
 
 
@@ -610,13 +610,13 @@ void setLEDs(byte leds)
 
 
 
-  if ((leds & CHOICE_YELLOW) != 0)
+  //if ((leds & CHOICE_YELLOW) != 0)
 
-    digitalWrite(LED_YELLOW, HIGH);
+ //   digitalWrite(LED_YELLOW, HIGH);
 
-  else
+ // else
 
-    digitalWrite(LED_YELLOW, LOW);
+ //  digitalWrite(LED_YELLOW, LOW);
 
 }
 
@@ -686,7 +686,7 @@ byte checkButton(void)
 
   else if (digitalRead(BUTTON_BLUE) == 0) return(CHOICE_BLUE); 
 
-  else if (digitalRead(BUTTON_YELLOW) == 0) return(CHOICE_YELLOW);
+  //else if (digitalRead(BUTTON_YELLOW) == 0) return(CHOICE_YELLOW);
 
 
 
@@ -738,11 +738,11 @@ void toner(byte which, int buzz_length_ms)
 
     break;
 
-  case CHOICE_YELLOW:
+  //case CHOICE_YELLOW:
 
-    buzz_sound(buzz_length_ms, 638); 
+   // buzz_sound(buzz_length_ms, 638); 
 
-    break;
+   // break;
 
   }
 
@@ -808,7 +808,7 @@ void play_winner(void)
 
   winner_sound();
 
-  setLEDs(CHOICE_RED | CHOICE_YELLOW);
+ // setLEDs(CHOICE_RED | CHOICE_YELLOW);
 
   winner_sound();
 
@@ -816,9 +816,9 @@ void play_winner(void)
 
   winner_sound();
 
-  setLEDs(CHOICE_RED | CHOICE_YELLOW);
+  //setLEDs(CHOICE_RED | CHOICE_YELLOW);
 
-  winner_sound();
+  //winner_sound();
 
 }
 
@@ -876,7 +876,7 @@ void play_loser(void)
 
 
 
-  setLEDs(CHOICE_BLUE | CHOICE_YELLOW);
+ // setLEDs(CHOICE_BLUE | CHOICE_YELLOW);
 
   buzz_sound(255, 1500);
 
@@ -888,9 +888,9 @@ void play_loser(void)
 
 
 
-  setLEDs(CHOICE_BLUE | CHOICE_YELLOW);
+  //setLEDs(CHOICE_BLUE | CHOICE_YELLOW);
 
-  buzz_sound(255, 1500);
+  //buzz_sound(255, 1500);
 
 }
 
@@ -930,11 +930,11 @@ void attractMode(void)
 
 
 
-    setLEDs(CHOICE_YELLOW);
+    //setLEDs(CHOICE_YELLOW);
 
-    delay(100);
+    //delay(100);
 
-    if (checkButton() != CHOICE_NONE) return;
+    //if (checkButton() != CHOICE_NONE) return;
 
   }
 
@@ -978,9 +978,9 @@ void play_beegees()
 
   // Ligue o LED inferior direito (amarelo)
 
-  setLEDs(CHOICE_YELLOW);
+  //setLEDs(CHOICE_YELLOW);
 
-  toner(CHOICE_YELLOW, 150);
+  //toner(CHOICE_YELLOW, 150);
 
 
 
