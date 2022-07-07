@@ -224,9 +224,9 @@
 
 // Parâmetros do jogo
 
-#define ROUNDS_TO_WIN      13 // Número de rodadas para vencer o Jogo.
+#define ROUNDS_TO_WIN      12 // Número de rodadas para vencer o Jogo.
 
-#define ENTRY_TIME_LIMIT   5000 // Tempo para pressionar um botão antes que o jogo acabe. 3000ms = 3 seg
+#define ENTRY_TIME_LIMIT   10000 // Tempo para pressionar um botão antes que o jogo acabe. 1000ms = 1 seg
 
 
 
@@ -236,6 +236,7 @@
 
 #define MODE_BEEGEES 2
 
+const int VR = 11;
 
 
 // Variáveis de estado do jogo
@@ -251,6 +252,10 @@ byte gameRound = 0; //Conta o número de rodadas de sucesso que o jogador fez
 void setup()
 
 {
+
+  
+  pinMode(VR,OUTPUT);
+  
 
   // Configuração dos pinos de entradas e saídas
 
@@ -530,7 +535,7 @@ void playMoves(void)
 
      // Encurtar isso para tornar o jogo mais difícil
 
-    delay(150); // 150 funciona bem. 75 fica rápido.
+    delay(200); // 150 funciona bem. 75 fica rápido.
 
   }
 
@@ -581,13 +586,12 @@ void setLEDs(byte leds)
 {
 
   if ((leds & CHOICE_RED) != 0)
-
+    
     digitalWrite(LED_RED, HIGH);
 
   else
 
     digitalWrite(LED_RED, LOW);
-
 
 
   if ((leds & CHOICE_GREEN) != 0)
@@ -678,7 +682,7 @@ byte wait_for_button(void)
 
 byte checkButton(void)
 
-{
+{ 
 
   if (digitalRead(BUTTON_RED) == 0) return(CHOICE_RED); 
 
@@ -721,6 +725,12 @@ void toner(byte which, int buzz_length_ms)
   {
 
   case CHOICE_RED:
+    
+    digitalWrite(VR,HIGH); //vibrar
+    delay(500);               
+    digitalWrite(VR,LOW); 
+    delay(500); 
+    
 
     buzz_sound(buzz_length_ms, 1136); 
 
@@ -728,12 +738,23 @@ void toner(byte which, int buzz_length_ms)
 
   case CHOICE_GREEN:
 
+    digitalWrite(VR,HIGH); //vibrar
+    delay(500);               
+    digitalWrite(VR,LOW); 
+    delay(500); 
+   
+    
     buzz_sound(buzz_length_ms, 568); 
 
     break;
 
   case CHOICE_BLUE:
 
+    digitalWrite(VR,HIGH); //vibrar
+    delay(500);               
+    digitalWrite(VR,LOW); 
+    delay(500); 
+    
     buzz_sound(buzz_length_ms, 851); 
 
     break;
@@ -831,7 +852,9 @@ void play_winner(void)
 void winner_sound(void)
 
 {
+  
 
+  
   // Alterna a campainha em várias velocidades
 
   for (byte x = 250 ; x > 70 ; x--)
@@ -944,110 +967,27 @@ void attractMode(void)
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-// As seguintes funções estão relacionadas apenas ao Easter Egg de Beegees
 
-
-
-// Notas na melodia. Cada nota é sobre uma nota 1/8, "0" são descansos.
-
-int melody[] = {
-
-  NOTE_G4, NOTE_A4, 0, NOTE_C5, 0, 0, NOTE_G4, 0, 0, 0,
-
-  NOTE_E4, 0, NOTE_D4, NOTE_E4, NOTE_G4, 0,
-
-  NOTE_D4, NOTE_E4, 0, NOTE_G4, 0, 0,
-
-  NOTE_D4, 0, NOTE_E4, 0, NOTE_G4, 0, NOTE_A4, 0, NOTE_C5, 0};
-
-
-
-int noteDuration = 115; // Isso essencialmente define o ritmo, 115 é quase certo para um groove disco :)
-
-int LEDnumber = 0; // Mantém o controle de qual LED estamos ligados durante o ciclo de beegees
-
-
-
-// Não faça nada além de tocar beegees ruins
-
-// Esta função é ativada quando o usuário segura o botão inferior direito durante a energização
-
-void play_beegees()
-
+void vibrarVitoria(void)
 {
-
-  // Ligue o LED inferior direito (amarelo)
-
-  //setLEDs(CHOICE_YELLOW);
-
-  //toner(CHOICE_YELLOW, 150);
-
-
-
-  setLEDs(CHOICE_RED | CHOICE_GREEN | CHOICE_BLUE); // Ligue os outros LEDs até você soltar o botão
-
-
-
-  while(checkButton() != CHOICE_NONE) ; // Aguarde até que o usuário pare de pressionar o botão
-
-
-
-  setLEDs(CHOICE_NONE); // Desligue os LEDs
-
-
-
-  delay(1000); // Espere um segundo antes de tocar música
-
-
-
-  digitalWrite(BUZZER1, LOW); // configure o lado "BUZZER1" da campainha para ficar baixo, enquanto tocamos o tom no outro pino.
-
-
-
-  while(checkButton() == CHOICE_NONE) // Reproduzir música até você pressionar um botão
-
-  {
-
-    // iterar sobre as notas da melodia:
-
-    for (int thisNote = 0; thisNote < 32; thisNote++) {
-
-      changeLED();
-
-      tone(BUZZER2, melody[thisNote],noteDuration);
-
-        // para distinguir as notas, defina um tempo mínimo entre elas.
-
-       // a duração da nota + 30% parece funcionar bem:
-
-      int pauseBetweenNotes = noteDuration * 1.30;
-
-      delay(pauseBetweenNotes);
-
-      // pare o tom tocando:
-
-      noTone(BUZZER2);
-
-    }
-
-  }
-
+  digitalWrite(VR,HIGH); 
+  delay(50);               
+  digitalWrite(VR,LOW); 
+  delay(50); 
+  digitalWrite(VR,HIGH); 
+  delay(50);               
+  digitalWrite(VR,LOW); 
+  delay(50);
+  digitalWrite(VR,HIGH); 
+  delay(50);               
+  digitalWrite(VR,LOW); 
+  delay(50);
 }
 
-
-
-// Cada vez que esta função é chamada, a placa se move para o próximo LED
-
-void changeLED(void)
-
+void vibrarCorNova(void)
 {
-
-  setLEDs(1 << LEDnumber); // Mude o LED
-
-
-
-  LEDnumber++; // Ir para o próximo LED
-
-  if(LEDnumber > 3) LEDnumber = 0; // Enrole o balcão, se necessário
-
+  digitalWrite(VR,HIGH); 
+  delay(500);               
+  digitalWrite(VR,LOW); 
+  delay(500); 
 }
